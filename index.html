@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B H1Dz Bypass</title>
+    <!-- Google Font + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b0b0f;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
+                              radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+        }
+
+        .glass {
+            background: rgba(18, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 32px;
+            padding: 40px 35px;
+            max-width: 720px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(139, 92, 246, 0.1);
+            transition: 0.3s;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .header i {
+            font-size: 2.2rem;
+            color: #a78bfa;
+            filter: drop-shadow(0 0 8px #7c3aed66);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .header span {
+            font-size: 0.8rem;
+            background: rgba(139, 92, 246, 0.2);
+            padding: 2px 14px;
+            border-radius: 50px;
+            color: #c4b5fd;
+            font-weight: 600;
+            margin-left: auto;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+            font-weight: 400;
+            border-left: 3px solid #8b5cf6;
+            padding-left: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 1px solid #2d2d44;
+            background: #13131f;
+            color: #e2e8f0;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.25s;
+            min-width: 200px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-row input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+        }
+
+        .input-row input::placeholder {
+            color: #4a4a6a;
+        }
+
+        .btn {
+            padding: 16px 30px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #3d3d5c;
+            color: #cbd5e1;
+        }
+
+        .btn-outline:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: #8b5cf6;
+            box-shadow: none;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            box-shadow: 0 6px 24px rgba(220, 38, 38, 0.35);
+        }
+
+        .result-box {
+            background: #0d0d1a;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0 18px;
+            border: 1px solid #2a2a44;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .result-box.show {
+            display: flex;
+        }
+
+        .result-box .label {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-box .link {
+            color: #e2e8f0;
+            word-break: break-all;
+            font-size: 0.95rem;
+            background: #1a1a2e;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #2d2d4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-box .link i {
+            color: #8b5cf6;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .result-box .link i:hover {
+            color: #a78bfa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .status-badge.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .history {
+            margin-top: 30px;
+            border-top: 1px solid #22223e;
+            padding-top: 24px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .history-header h3 {
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .history-header .badge {
+            background: #2d2d4a;
+            color: #94a3b8;
+            padding: 2px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .history-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list::-webkit-scrollbar-track {
+            background: #0d0d1a;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: #4a4a6a;
+            border-radius: 10px;
+        }
+
+        .history-item {
+            background: #0d0d1a;
+            border: 1px solid #22223e;
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .history-item:hover {
+            border-color: #4a4a6a;
+        }
+
+        .history-item .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-item .info .original {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item .info .result {
+            color: #e2e8f0;
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item .time {
+            color: #4a4a6a;
+            font-size: 0.7rem;
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+
+        .history-item .del {
+            color: #4a4a6a;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.2s;
+        }
+
+        .history-item .del:hover {
+            color: #ef4444;
+        }
+
+        .empty-history {
+            color: #4a4a6a;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #3d3d5c;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .footer .badges {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer .badges span {
+            background: #1a1a2e;
+            padding: 2px 12px;
+            border-radius: 50px;
+            border: 1px solid #2d2d44;
+        }
+
+        .footer i {
+            margin-right: 4px;
+        }
+
+        /* responsive */
+        @media (max-width: 550px) {
+            .glass {
+                padding: 24px 18px;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .btn {
+                padding: 14px 18px;
+                font-size: 0.9rem;
+            }
+            .input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .input-row input {
+                min-width: unset;
+            }
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .loading i {
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            border: 1px solid #3d3d5c;
+            padding: 12px 28px;
+            border-radius: 50px;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass">
+        <!-- Header -->
+        <div class="header">
+            <i class="fas fa-shield-halved"></i>
+            <h1>B H1Dz Bypass</h1>
+            <span>v2.0</span>
+        </div>
+        <div class="subtitle">
+            <i class="fas fa-link" style="color: #8b5cf6; margin-right: 8px;"></i>
+            Bypass SFL.gl, Linkvertise, Adfly, Shorte.st &amp; lebih banyak lagi
+        </div>
+
+        <!-- Input -->
+        <div class="input-group">
+            <div class="input-row">
+                <input type="text" id="urlInput" placeholder="Paste link shortener disini..." />
+                <button class="btn" id="bypassBtn"><i class="fas fa-arrow-right"></i> Process Bypass</button>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-outline" id="pasteBtn" style="padding: 10px 18px; font-size:0.85rem;"><i class="fas fa-paste"></i> Paste</button>
+                <button class="btn btn-outline" id="clearInputBtn" style="padding: 10px 18px; font-size:0.85rem;"><i class="fas fa-eraser"></i> Clear</button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loadingIndicator">
+            <i class="fas fa-spinner"></i> Memproses bypass...
+        </div>
+
+        <!-- Result -->
+        <div class="result-box" id="resultBox">
+            <div class="label">Hasil Bypass</div>
+            <div class="link" id="resultLink">
+                <span id="resultDestination">-</span>
+                <i class="fas fa-copy" id="copyBtn" title="Salin link"></i>
+            </div>
+            <div id="resultStatus"></div>
+        </div>
+
+        <!-- History -->
+        <div class="history">
+            <div class="history-header">
+                <h3><i class="fas fa-clock-rotate-left" style="color:#8b5cf6; margin-right:8px;"></i>Riwayat Terakhir</h3>
+                <span class="badge" id="historyCount">0</span>
+                <button class="btn btn-danger btn-outline" id="clearHistoryBtn" style="padding: 6px 16px; font-size:0.75rem; border-radius:50px;">
+                    <i class="fas fa-trash"></i> Hapus Semua
+                </button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="empty-history">Belum ada riwayat bypass</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <span><i class="fas fa-code"></i> Credits: H1Dz · Wong Stress</span>
+            <div class="badges">
+                <span><i class="fas fa-circle" style="color:#4ade80; font-size:0.6rem;"></i> 100% UPTIME</span>
+                <span><i class="fas fa-lock"></i> SSL ENCRYPTED</span>
+                <span><i class="fas fa-cloud"></i> Vercel EDGE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ─── DOM REFS ──────────────────────────────────────────────────
+        const urlInput = document.getElementById('urlInput');
+        const bypassBtn = document.getElementById('bypassBtn');
+        const pasteBtn = document.getElementById('pasteBtn');
+        const clearInputBtn = document.getElementById('clearInputBtn');
+        const resultBox = document.getElementById('resultBox');
+        const resultDestination = document.getElementById('resultDestination');
+        const resultStatus = document.getElementById('resultStatus');
+        const copyBtn = document.getElementById('copyBtn');
+        const historyList = document.getElementById('historyList');
+        const historyCount = document.getElementById('historyCount');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const toast = document.getElementById('toast');
+
+        // ─── STATE ────────────────────────────────────────────────────
+        let toastTimeout = null;
+
+        // ─── HELPERS ──────────────────────────────────────────────────
+        function showToast(msg, duration = 2500) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        function saveHistory(entry) {
+            let history = JSON.parse(localStorage.getItem('bypassHistory') || '[]');
+            history.unshift(entry);
+            if (history.length > 50) history.pop(); // batasi 50
+            localStorage.setItem('bypassHistory', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function loadHistory() {
+            return JSON.parse(localStorage.getItem('bypassHistory') || '[]');
+        }
+
+        function renderHistory() {
+            const history = loadHistory();
+            historyCount.textContent = history.length;
+            if (history.length === 0) {
+                historyList.innerHTML = `<div class="empty-history">Belum ada riwayat bypass</div>`;
+                return;
+            }
+            historyList.innerHTML = history.map((item, index) => `
+                <div class="history-item">
+                    <div class="info">
+                        <div class="original">${escapeHtml(item.original)}</div>
+                        <div class="result">${escapeHtml(item.destination)}</div>
+                    </div>
+                    <span class="time">${item.time}</span>
+                    <i class="fas fa-xmark del" data-index="${index}"></i>
+                </div>
+            `).join('');
+
+            // Event listener hapus per item
+            document.querySelectorAll('.history-item .del').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    deleteHistoryItem(idx);
+                });
+            });
+        }
+
+        function deleteHistoryItem(index) {
+            let history = loadHistory();
+            history.splice(index, 1);
+            localStorage.setItem('bypassHistory', JSON.stringify(history));
+            renderHistory();
+            showToast('Item riwayat dihapus');
+        }
+
+        function clearAllHistory() {
+            if (confirm('Hapus semua riwayat bypass?')) {
+                localStorage.removeItem('bypassHistory');
+                renderHistory();
+                showToast('Semua riwayat dihapus');
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ─── BYPASS LOGIC ────────────────────────────────────────────
+        async function bypassUrl(url) {
+            // Normalisasi URL
+            if (!/^https?:\/\//i.test(url)) {
+                url = 'https://' + url;
+            }
+
+            // Daftar API bypass (coba satu per satu)
+            const apis = [
+                {
+                    name: 'bypass.vip',
+                    url: 'https://api.bypass.vip/',
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                },
+                {
+                    name: 'shrtco bypass (alternative)',
+                    url: `https://api.bypass.vip/?url=${encodeURIComponent(url)}`,
+                    method: 'GET'
+                }
+            ];
+
+            for (const api of apis) {
+                try {
+                    const response = await fetch(api.url, {
+                        method: api.method,
+                        headers: api.headers || {},
+                        body: api.body || undefined
+                    });
+                    if (!response.ok) continue;
+                    const data = await response.json();
+                    if (data && data.destination) {
+                        return { success: true, destination: data.destination };
+                    }
+                } catch (e) {
+                    // coba API berikutnya
+                }
+            }
+
+            // Fallback: coba langsung fetch (hanya untuk redirect)
+            try {
+                const resp = await fetch(url, {
+                    method: 'HEAD',
+                    redirect: 'manual',
+                    mode: 'no-cors'
+                });
+                // tidak bisa baca header karena no-cors, skip
+            } catch (e) {}
+
+            return { success: false, error: 'Tidak dapat bypass link ini' };
+        }
+
+        // ─── MAIN PROCESS ────────────────────────────────────────────
+        async function processBypass() {
+            const rawUrl = urlInput.value.trim();
+            if (!rawUrl) {
+                showToast('Masukkan link shortener terlebih dahulu!', 2000);
+                return;
+            }
+
+            // Tampilkan loading
+            loadingIndicator.classList.add('show');
+            bypassBtn.disabled = true;
+            resultBox.classList.remove('show');
+
+            try {
+                const result = await bypassUrl(rawUrl);
+
+                if (result.success) {
+                    const dest = result.destination;
+                    // Tampilkan hasil
+                    resultDestination.textContent = dest;
+                    resultStatus.innerHTML = `<span class="status-badge success">✔ Bypass berhasil</span>`;
+                    resultBox.classList.add('show');
+
+                    // Simpan riwayat
+                    saveHistory({
+                        original: rawUrl,
+                        destination: dest,
+                        time: getCurrentTime()
+                    });
+
+                    showToast('Bypass berhasil!', 2000);
+                } else {
+                    resultDestination.textContent = 'Gagal';
+                    resultStatus.innerHTML = `<span class="status-badge error">✖ ${result.error || 'Bypass gagal'}</span>`;
+                    resultBox.classList.add('show');
+                    showToast('Bypass gagal, coba link lain', 2500);
+                }
+            } catch (err) {
+                resultDestination.textContent = 'Error';
+                resultStatus.innerHTML = `<span class="status-badge error">✖ ${err.message || 'Terjadi kesalahan'}</span>`;
+                resultBox.classList.add('show');
+                showToast('Error: ' + err.message, 2500);
+            } finally {
+                loadingIndicator.classList.remove('show');
+                bypassBtn.disabled = false;
+            }
+        }
+
+        // ─── COPY ─────────────────────────────────────────────────────
+        function copyResult() {
+            const text = resultDestination.textContent;
+            if (!text || text === '-' || text === 'Gagal' || text === 'Error') {
+                showToast('Tidak ada link untuk disalin', 1500);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Link disalin ke clipboard!', 1500);
+            }).catch(() => {
+                // fallback
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                showToast('Link disalin!', 1500);
+            });
+        }
+
+        // ─── PASTE (request clipboard) ──────────────────────────────
+        async function pasteFromClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                urlInput.value = text;
+                showToast('Link ditempel dari clipboard', 1500);
+            } catch (err) {
+                showToast('Gagal membaca clipboard', 1500);
+            }
+        }
+
+        // ─── EVENT LISTENERS ─────────────────────────────────────────
+        bypassBtn.addEventListener('click', processBypass);
+        copyBtn.addEventListener('click', copyResult);
+        pasteBtn.addEventListener('click', pasteFromClipboard);
+        clearInputBtn.addEventListener('click', () => {
+            urlInput.value = '';
+            showToast('Input dibersihkan', 1000);
+        });
+        clearHistoryBtn.addEventListener('click', clearAllHistory);
+
+        // Enter key on input
+        urlInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                bypassBtn.click();
+            }
+        });
+
+        // ─── INIT ─────────────────────────────────────────────────────
+        renderHistory();
+
+        // Jika ada query parameter ?url=...
+        const params = new URLSearchParams(window.location.search);
+        const qUrl = params.get('url');
+        if (qUrl) {
+            urlInput.value = qUrl;
+            bypassBtn.click();
+        }
+    </script>
+
+</body>
+</html>
