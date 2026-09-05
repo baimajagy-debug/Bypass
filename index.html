@@ -1,56 +1,531 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>B4im — Bypass Shortener</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B4IM Bypass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        body { background: #0a0a0f; color: #fff; font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .box { background: #1a1a2e; padding: 40px; border-radius: 20px; width: 500px; text-align: center; border: 1px solid #8b5cf6; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #0d0d1a; color: #fff; margin: 10px 0; }
-        button { background: #8b5cf6; color: #fff; padding: 12px 30px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #6d28d9; }
-        #result { margin-top: 20px; word-break: break-all; color: #4ade80; }
-        .error { color: #f87171 !important; }
-        .footer { margin-top: 30px; font-size: 12px; color: #4a4a6a; }
-        .copy-btn { background: #2d2d4a; color: #fff; padding: 4px 12px; border-radius: 6px; cursor: pointer; margin-left: 10px; font-size: 12px; }
-        .copy-btn:hover { background: #4a4a6a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(16, 16, 28, 0.92);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 28px;
+            padding: 40px 35px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header span {
+            font-size: 0.7rem;
+            background: rgba(139,92,246,0.15);
+            padding: 2px 14px;
+            border-radius: 50px;
+            color: #a78bfa;
+            border: 1px solid rgba(139,92,246,0.2);
+            margin-left: auto;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+            border-left: 3px solid #8b5cf6;
+            padding-left: 16px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .input-row input {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 1px solid #2d2d44;
+            background: #0d0d1a;
+            color: #e2e8f0;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.25s;
+            min-width: 200px;
+            font-family: 'Inter', sans-serif;
+        }
+        .input-row input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+        }
+        .input-row input::placeholder {
+            color: #4a4a6a;
+        }
+        .btn {
+            padding: 16px 30px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn:hover { transform: scale(1.02); box-shadow: 0 6px 24px rgba(139,92,246,0.4); }
+        .btn:active { transform: scale(0.97); }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #3d3d5c;
+            color: #cbd5e1;
+        }
+        .btn-outline:hover { background: rgba(139,92,246,0.08); border-color: #8b5cf6; }
+        .btn-sm { padding: 10px 18px; font-size: 0.85rem; border-radius: 12px; }
+        .btn-danger {
+            background: #dc2626;
+            border: none;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            box-shadow: 0 6px 24px rgba(220,38,38,0.3);
+        }
+
+        .result-box {
+            background: #0a0a16;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 18px 0;
+            border: 1px solid #2a2a44;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .result-box.show { display: flex; }
+        .result-box .label {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-box .link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #111125;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid #2d2d4a;
+            word-break: break-all;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+        .result-box .link .copy-btn {
+            color: #8b5cf6;
+            cursor: pointer;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+        .result-box .link .copy-btn:hover { color: #a78bfa; }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+        .status-badge.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+        .status-badge.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        .history {
+            margin-top: 28px;
+            border-top: 1px solid #1a1a2e;
+            padding-top: 22px;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .history-header h3 {
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .history-header .badge {
+            background: #2d2d4a;
+            color: #94a3b8;
+            padding: 2px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+        .history-list::-webkit-scrollbar { width: 4px; }
+        .history-list::-webkit-scrollbar-track { background: #0d0d1a; }
+        .history-list::-webkit-scrollbar-thumb { background: #4a4a6a; border-radius: 10px; }
+
+        .history-item {
+            background: #0a0a16;
+            border: 1px solid #1a1a2e;
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .history-item:hover { border-color: #3d3d5c; }
+        .history-item .info { flex: 1; min-width: 0; }
+        .history-item .info .original {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .history-item .info .result {
+            color: #e2e8f0;
+            font-weight: 500;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .history-item .time {
+            color: #4a4a6a;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+        .history-item .del {
+            color: #4a4a6a;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.2s;
+        }
+        .history-item .del:hover { color: #ef4444; }
+
+        .empty-history {
+            color: #4a4a6a;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #3d3d5c;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer .badges {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .footer .badges span {
+            background: #1a1a2e;
+            padding: 2px 14px;
+            border-radius: 50px;
+            border: 1px solid #2d2d44;
+        }
+        .footer i { margin-right: 4px; }
+        .footer .credit { color: #6a6a8a; }
+
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            padding: 8px 0;
+        }
+        .loading i { animation: spin 0.9s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading.show { display: flex; }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            border: 1px solid #3d3d5c;
+            padding: 12px 28px;
+            border-radius: 50px;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+            z-index: 999;
+        }
+        .toast.show { opacity: 1; }
+
+        @media (max-width: 550px) {
+            .container { padding: 24px 18px; }
+            .header h1 { font-size: 1.5rem; }
+            .btn { padding: 14px 20px; font-size: 0.9rem; }
+            .input-row { flex-direction: column; align-items: stretch; }
+            .input-row input { min-width: unset; }
+        }
     </style>
 </head>
 <body>
-<div class="box">
-    <h1 style="color: #a78bfa;">B4im</h1>
-    <p style="color: #94a3b8;">Bypass SFL.gl & Shortener Lain</p>
-    <input type="text" id="url" placeholder="Tempel link shortener..." />
-    <button onclick="bypass()">Bypass</button>
-    <div id="result"></div>
-    <div class="footer">Credits: B4im</div>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <i class="fas fa-skull" style="color:#a78bfa; font-size:2rem;"></i>
+        <h1>B4IM</h1>
+        <span>v3.0</span>
+    </div>
+    <div class="subtitle">
+        <i class="fas fa-unlink" style="color:#8b5cf6;margin-right:8px;"></i>
+        Bypass SFL.gl, Linkvertise, Adfly, Shorte.st &amp; lainnya
+    </div>
+
+    <!-- INPUT -->
+    <div class="input-group">
+        <div class="input-row">
+            <input type="text" id="urlInput" placeholder="Paste your link here (e.g., https://sfl.gl/...)" />
+            <button class="btn" id="bypassBtn"><i class="fas fa-arrow-right"></i> Process Bypass</button>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" id="pasteBtn"><i class="fas fa-paste"></i> Paste</button>
+            <button class="btn btn-outline btn-sm" id="clearInputBtn"><i class="fas fa-eraser"></i> Clear</button>
+        </div>
+    </div>
+
+    <!-- LOADING -->
+    <div class="loading" id="loadingIndicator">
+        <i class="fas fa-spinner"></i> Memproses bypass...
+    </div>
+
+    <!-- RESULT -->
+    <div class="result-box" id="resultBox">
+        <div class="label">Hasil Bypass</div>
+        <div class="link">
+            <span id="resultDestination">-</span>
+            <i class="fas fa-copy copy-btn" id="copyBtn" title="Salin link"></i>
+        </div>
+        <div id="resultStatus"></div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history">
+        <div class="history-header">
+            <h3><i class="fas fa-clock-rotate-left" style="color:#8b5cf6;margin-right:8px;"></i>RIWAYAT TERAKHIR</h3>
+            <span class="badge" id="historyCount">0</span>
+            <button class="btn btn-danger btn-sm" id="clearHistoryBtn"><i class="fas fa-trash"></i> HAPUS SEMUA</button>
+        </div>
+        <div class="history-list" id="historyList">
+            <div class="empty-history">Belum ada riwayat bypass</div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <span class="credit"><i class="fas fa-code"></i> BATUKAM GANG · Credits: B4IM</span>
+        <div class="badges">
+            <span><i class="fas fa-circle" style="color:#4ade80;font-size:0.6rem;"></i> 100% UPTIME</span>
+            <span><i class="fas fa-lock"></i> SSL ENCRYPTED</span>
+            <span><i class="fas fa-cloud"></i> Vercel EDGE</span>
+        </div>
+    </div>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
-async function bypass() {
-    const url = document.getElementById('url').value;
-    const result = document.getElementById('result');
-    if (!url) { result.innerHTML = '⚠️ Masukkan link!'; result.className = 'error'; return; }
-    result.innerHTML = '⏳ Memproses...';
-    result.className = '';
-    try {
-        const res = await fetch(`/api/bypass?url=${encodeURIComponent(url)}`);
-        const data = await res.json();
-        if (data.destination) {
-            result.innerHTML = `✅ ${data.destination} <span class="copy-btn" onclick="copyText('${data.destination}')">Salin</span>`;
-            result.className = '';
-        } else {
-            result.innerHTML = `❌ ${data.error || 'Gagal bypass'}`;
-            result.className = 'error';
-        }
-    } catch(e) {
-        result.innerHTML = `❌ Error: ${e.message}`;
-        result.className = 'error';
+// ─── DOM ──────────────────────────────────────────────────────────────
+const urlInput = document.getElementById('urlInput');
+const bypassBtn = document.getElementById('bypassBtn');
+const pasteBtn = document.getElementById('pasteBtn');
+const clearInputBtn = document.getElementById('clearInputBtn');
+const resultBox = document.getElementById('resultBox');
+const resultDestination = document.getElementById('resultDestination');
+const resultStatus = document.getElementById('resultStatus');
+const copyBtn = document.getElementById('copyBtn');
+const historyList = document.getElementById('historyList');
+const historyCount = document.getElementById('historyCount');
+const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const toast = document.getElementById('toast');
+
+let toastTimeout = null;
+
+function showToast(msg, dur = 2500) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), dur);
+}
+
+// ─── HISTORY ──────────────────────────────────────────────────────────
+function getHistory() {
+    return JSON.parse(localStorage.getItem('b4imHistory') || '[]');
+}
+
+function saveHistory(entry) {
+    let h = getHistory();
+    h.unshift(entry);
+    if (h.length > 50) h.pop();
+    localStorage.setItem('b4imHistory', JSON.stringify(h));
+    renderHistory();
+}
+
+function renderHistory() {
+    const h = getHistory();
+    historyCount.textContent = h.length;
+    if (!h.length) {
+        historyList.innerHTML = `<div class="empty-history">Belum ada riwayat bypass</div>`;
+        return;
+    }
+    historyList.innerHTML = h.map((item, i) => `
+        <div class="history-item">
+            <div class="info">
+                <div class="original">${escapeHtml(item.original)}</div>
+                <div class="result">${escapeHtml(item.destination)}</div>
+            </div>
+            <span class="time">${item.time}</span>
+            <i class="fas fa-xmark del" data-index="${i}"></i>
+        </div>
+    `).join('');
+    document.querySelectorAll('.history-item .del').forEach(el => {
+        el.addEventListener('click', function() {
+            let h = getHistory();
+            h.splice(parseInt(this.dataset.index), 1);
+            localStorage.setItem('b4imHistory', JSON.stringify(h));
+            renderHistory();
+            showToast('Item dihapus');
+        });
+    });
+}
+
+function clearAllHistory() {
+    if (confirm('Hapus semua riwayat?')) {
+        localStorage.removeItem('b4imHistory');
+        renderHistory();
+        showToast('Semua riwayat dihapus');
     }
 }
 
-function copyText(text) {
+function escapeHtml(text) {
+    const d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+}
+
+function getTime() {
+    return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ─── BYPASS ──────────────────────────────────────────────────────────
+async function processBypass() {
+    const raw = urlInput.value.trim();
+    if (!raw) {
+        showToast('Masukkan link shortener!', 2000);
+        return;
+    }
+
+    loadingIndicator.classList.add('show');
+    bypassBtn.disabled = true;
+    resultBox.classList.remove('show');
+
+    try {
+        const res = await fetch(`/api/bypass?url=${encodeURIComponent(raw)}`);
+        const data = await res.json();
+
+        if (data.success && data.destination) {
+            resultDestination.textContent = data.destination;
+            resultStatus.innerHTML = `<span class="status-badge success">✔ Bypass berhasil</span>`;
+            resultBox.classList.add('show');
+            saveHistory({
+                original: raw,
+                destination: data.destination,
+                time: getTime()
+            });
+            showToast('Bypass berhasil!', 2000);
+        } else {
+            resultDestination.textContent = 'Gagal';
+            resultStatus.innerHTML = `<span class="status-badge error">✖ ${data.error || 'Gagal bypass'}</span>`;
+            resultBox.classList.add('show');
+            showToast('Bypass gagal', 2500);
+        }
+    } catch (err) {
+        resultDestination.textContent = 'Error';
+        resultStatus.innerHTML = `<span class="status-badge error">✖ ${err.message}</span>`;
+        resultBox.classList.add('show');
+        showToast('Error: ' + err.message, 2500);
+    } finally {
+        loadingIndicator.classList.remove('show');
+        bypassBtn.disabled = false;
+    }
+}
+
+// ─── COPY ─────────────────────────────────────────────────────────────
+function copyResult() {
+    const text = resultDestination.textContent;
+    if (!text || text === '-' || text === 'Gagal' || text === 'Error') {
+        showToast('Tidak ada link untuk disalin', 1500);
+        return;
+    }
     navigator.clipboard.writeText(text).then(() => {
-        alert('Link disalin!');
+        showToast('Link disalin!', 1500);
     }).catch(() => {
         const ta = document.createElement('textarea');
         ta.value = text;
@@ -58,9 +533,47 @@ function copyText(text) {
         ta.select();
         document.execCommand('copy');
         ta.remove();
-        alert('Link disalin!');
+        showToast('Link disalin!', 1500);
     });
 }
+
+// ─── PASTE ────────────────────────────────────────────────────────────
+async function pasteFromClipboard() {
+    try {
+        const text = await navigator.clipboard.readText();
+        urlInput.value = text;
+        showToast('Link ditempel dari clipboard', 1500);
+    } catch {
+        showToast('Gagal membaca clipboard', 1500);
+    }
+}
+
+// ─── EVENTS ──────────────────────────────────────────────────────────
+bypassBtn.addEventListener('click', processBypass);
+copyBtn.addEventListener('click', copyResult);
+pasteBtn.addEventListener('click', pasteFromClipboard);
+clearInputBtn.addEventListener('click', () => {
+    urlInput.value = '';
+    showToast('Input dibersihkan', 1000);
+});
+clearHistoryBtn.addEventListener('click', clearAllHistory);
+urlInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        bypassBtn.click();
+    }
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+renderHistory();
+
+const params = new URLSearchParams(window.location.search);
+const qUrl = params.get('url');
+if (qUrl) {
+    urlInput.value = qUrl;
+    bypassBtn.click();
+}
 </script>
+
 </body>
 </html>
