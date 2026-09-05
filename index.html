@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>B4IM — Bypass Shortener</title>
+    <title>B41M — Bypass Shortener</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
@@ -253,8 +253,8 @@
 <div class="glass">
     <div class="header">
         <i class="fas fa-skull"></i>
-        <h1>B4IM</h1>
-        <span>v2.1</span>
+        <h1>B41M</h1>
+        <span>v2.2</span>
     </div>
     <div class="subtitle">
         <i class="fas fa-unlink" style="color:#8b5cf6;margin-right:8px;"></i>
@@ -297,7 +297,7 @@
     </div>
 
     <div class="footer">
-        <span><i class="fas fa-code"></i> Credits: H1Dz · Wong Stress</span>
+        <span><i class="fas fa-code"></i> Credits: B41m</span>
         <div class="badges">
             <span><i class="fas fa-circle" style="color:#4ade80;font-size:0.6rem;"></i> 100% UPTIME</span>
             <span><i class="fas fa-lock"></i> SSL</span>
@@ -335,15 +335,15 @@ function showToast(msg, dur=2500) {
 
 // ─── HISTORY ──────────────────────────────────────────────────────
 function saveHistory(entry) {
-    let h = JSON.parse(localStorage.getItem('b4imHistory') || '[]');
+    let h = JSON.parse(localStorage.getItem('b41mHistory') || '[]');
     h.unshift(entry);
     if (h.length > 50) h.pop();
-    localStorage.setItem('b4imHistory', JSON.stringify(h));
+    localStorage.setItem('b41mHistory', JSON.stringify(h));
     renderHistory();
 }
 
 function loadHistory() {
-    return JSON.parse(localStorage.getItem('b4imHistory') || '[]');
+    return JSON.parse(localStorage.getItem('b41mHistory') || '[]');
 }
 
 function renderHistory() {
@@ -367,7 +367,7 @@ function renderHistory() {
         el.addEventListener('click', function() {
             let h = loadHistory();
             h.splice(parseInt(this.dataset.index), 1);
-            localStorage.setItem('b4imHistory', JSON.stringify(h));
+            localStorage.setItem('b41mHistory', JSON.stringify(h));
             renderHistory();
             showToast('Item dihapus');
         });
@@ -376,7 +376,7 @@ function renderHistory() {
 
 function clearAllHistory() {
     if (confirm('Hapus semua riwayat?')) {
-        localStorage.removeItem('b4imHistory');
+        localStorage.removeItem('b41mHistory');
         renderHistory();
         showToast('Semua riwayat dihapus');
     }
@@ -392,41 +392,33 @@ function getTime() {
     return new Date().toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'});
 }
 
-// ─── BYPASS ENGINE ──────────────────────────────────────────────
+// ─── BYPASS ENGINE (FIX — 3 API + USER-AGENT) ──────────────────
 async function bypassUrl(url) {
     if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
 
-    // API 1: bypass.vip
-    try {
-        const resp = await fetch('https://api.bypass.vip/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url })
-        });
-        if (resp.ok) {
-            const data = await resp.json();
-            if (data && data.destination) {
-                return { success: true, destination: data.destination };
-            }
-        }
-    } catch(e) {}
+    const apis = [
+        `https://api.bypass.vip/?url=${encodeURIComponent(url)}`,
+        `https://bypass.bot.nu/api/?url=${encodeURIComponent(url)}`,
+        `https://bypass-api.com/api/bypass?url=${encodeURIComponent(url)}`
+    ];
 
-    // API 2: bypass.bot.nu (fallback)
-    try {
-        const resp = await fetch(`https://bypass.bot.nu/api/?url=${encodeURIComponent(url)}`);
-        if (resp.ok) {
-            const data = await resp.json();
-            if (data && data.destination) {
-                return { success: true, destination: data.destination };
+    for (const api of apis) {
+        try {
+            const resp = await fetch(api, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+                }
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data && data.destination) {
+                    return { success: true, destination: data.destination };
+                }
             }
+        } catch(e) {
+            // lanjut ke API berikutnya
         }
-    } catch(e) {}
-
-    // API 3: langsung cek redirect (HEAD)
-    try {
-        const resp = await fetch(url, { method: 'HEAD', redirect: 'manual', mode: 'no-cors' });
-        // kalo no-cors, ga bisa baca, skip
-    } catch(e) {}
+    }
 
     return { success: false, error: 'Tidak dapat bypass link ini' };
 }
