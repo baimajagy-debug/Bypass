@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>B41M Bypass</title>
+    <title>B4im — Bypass Shortener</title>
     <style>
         body { background: #0a0a0f; color: #fff; font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; }
         .box { background: #1a1a2e; padding: 40px; border-radius: 20px; width: 500px; text-align: center; border: 1px solid #8b5cf6; }
@@ -11,17 +11,20 @@
         #result { margin-top: 20px; word-break: break-all; color: #4ade80; }
         .error { color: #f87171 !important; }
         .footer { margin-top: 30px; font-size: 12px; color: #4a4a6a; }
+        .copy-btn { background: #2d2d4a; color: #fff; padding: 4px 12px; border-radius: 6px; cursor: pointer; margin-left: 10px; font-size: 12px; }
+        .copy-btn:hover { background: #4a4a6a; }
     </style>
 </head>
 <body>
 <div class="box">
-    <h1 style="color: #a78bfa;">B41M</h1>
+    <h1 style="color: #a78bfa;">B4im</h1>
     <p style="color: #94a3b8;">Bypass SFL.gl & Shortener Lain</p>
     <input type="text" id="url" placeholder="Tempel link shortener..." />
     <button onclick="bypass()">Bypass</button>
     <div id="result"></div>
-    <div class="footer">Credits: B41m</div>
+    <div class="footer">Credits: B4im</div>
 </div>
+
 <script>
 async function bypass() {
     const url = document.getElementById('url').value;
@@ -33,16 +36,30 @@ async function bypass() {
         const res = await fetch(`/api/bypass?url=${encodeURIComponent(url)}`);
         const data = await res.json();
         if (data.destination) {
-            result.innerHTML = `✅ ${data.destination}`;
+            result.innerHTML = `✅ ${data.destination} <span class="copy-btn" onclick="copyText('${data.destination}')">Salin</span>`;
             result.className = '';
         } else {
-            result.innerHTML = `❌ Gagal: ${data.error || 'coba lagi'}`;
+            result.innerHTML = `❌ ${data.error || 'Gagal bypass'}`;
             result.className = 'error';
         }
     } catch(e) {
         result.innerHTML = `❌ Error: ${e.message}`;
         result.className = 'error';
     }
+}
+
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Link disalin!');
+    }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        alert('Link disalin!');
+    });
 }
 </script>
 </body>
