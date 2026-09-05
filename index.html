@@ -9,6 +9,7 @@
         button { background: #8b5cf6; color: #fff; padding: 12px 30px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
         button:hover { background: #6d28d9; }
         #result { margin-top: 20px; word-break: break-all; color: #4ade80; }
+        .error { color: #f87171 !important; }
         .footer { margin-top: 30px; font-size: 12px; color: #4a4a6a; }
     </style>
 </head>
@@ -24,18 +25,23 @@
 <script>
 async function bypass() {
     const url = document.getElementById('url').value;
-    if (!url) return alert('Masukkan link!');
-    document.getElementById('result').innerHTML = '⏳ Memproses...';
+    const result = document.getElementById('result');
+    if (!url) { result.innerHTML = '⚠️ Masukkan link!'; result.className = 'error'; return; }
+    result.innerHTML = '⏳ Memproses...';
+    result.className = '';
     try {
         const res = await fetch(`/api/bypass?url=${encodeURIComponent(url)}`);
         const data = await res.json();
         if (data.destination) {
-            document.getElementById('result').innerHTML = `✅ ${data.destination}`;
+            result.innerHTML = `✅ ${data.destination}`;
+            result.className = '';
         } else {
-            document.getElementById('result').innerHTML = `❌ Gagal: ${data.error || 'coba lagi'}`;
+            result.innerHTML = `❌ Gagal: ${data.error || 'coba lagi'}`;
+            result.className = 'error';
         }
     } catch(e) {
-        document.getElementById('result').innerHTML = `❌ Error: ${e.message}`;
+        result.innerHTML = `❌ Error: ${e.message}`;
+        result.className = 'error';
     }
 }
 </script>
